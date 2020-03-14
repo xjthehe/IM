@@ -1,7 +1,12 @@
 package ndk.pax.com.im
 
+import android.util.LogPrinter
+import android.view.KeyEvent
+import android.widget.Button
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_login.*
 import ndk.pax.com.im.contract.LoginContract
+import ndk.pax.com.im.presenter.LoginPresenter
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -13,6 +18,8 @@ import org.jetbrains.anko.toast
  */
 
 class LoginActivity:BaseActivity(),LoginContract.View{
+
+    val presenter=LoginPresenter(this);
 
     override fun onUserNameError() {
         userName.setError(getString(R.string.user_name_error));
@@ -40,9 +47,29 @@ class LoginActivity:BaseActivity(),LoginContract.View{
         //隐藏进度条
         dismissProgress();
         //弹出toast
-        toast(getString(R.string.login_failed));
+        toast(getString(R.string.login_failed));//anko库封装的
     }
 
     override fun getLayoutResId(): Int =R.layout.activity_login;
 
+    override fun init() {
+        super.init()
+        login.setOnClickListener{login()}
+        password.setOnEditorActionListener(object :TextView.OnEditorActionListener{
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                login();
+                return true;
+            }
+        }
+        )
+    }
+
+
+    fun login(){
+        val userNameString=userName.text.trim().toString();
+        val passwordString=password.text.trim().toString();
+        presenter.login(userNameString,passwordString);
+    }
 }
+
+
