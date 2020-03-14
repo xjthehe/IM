@@ -10,7 +10,7 @@ package ndk.pax.com.im.contract
 interface RegisterContract{
 
     interface Presenter:BasePresenter{
-        fun register(userName:String,password:String);
+        fun register(userName:String,password:String,confirmPassword:String);
     }
 
     interface View{
