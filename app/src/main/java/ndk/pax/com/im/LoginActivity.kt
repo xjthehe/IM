@@ -1,5 +1,7 @@
 package ndk.pax.com.im
 
+import android.content.pm.PackageManager
+import android.support.v4.app.ActivityCompat
 import android.util.LogPrinter
 import android.view.KeyEvent
 import android.widget.Button
@@ -9,6 +11,7 @@ import ndk.pax.com.im.contract.LoginContract
 import ndk.pax.com.im.presenter.LoginPresenter
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
+import java.util.jar.Manifest
 
 /**
  * User：Rowen
@@ -67,9 +70,31 @@ class LoginActivity:BaseActivity(),LoginContract.View{
 
     fun login(){
         hideSoftKeyboard();
-        val userNameString=userName.text.trim().toString();
-        val passwordString=password.text.trim().toString();
-        presenter.login(userNameString,passwordString);
+        if(hasWriteExternalStoragePermission()){
+            val userNameString=userName.text.trim().toString();
+            val passwordString=password.text.trim().toString();
+            presenter.login(userNameString,passwordString);
+        }else{
+            applyWriteExternalStoragePermission();
+        }
+
+    }
+
+    private fun applyWriteExternalStoragePermission() {
+        val permissions= arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        ActivityCompat.requestPermissions(this,permissions,0);
+        //多次拒绝后，勾选不提示框，下面直接走else
+    }
+    //requestPermissions 回调函数
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            login();
+        }else toast(R.string.permission_denied);
+    }
+    //检查磁盘是否有权限
+    private fun hasWriteExternalStoragePermission(): Boolean {
+        val result=ActivityCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result==PackageManager.PERMISSION_GRANTED;
     }
 }
 
