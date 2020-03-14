@@ -1,6 +1,9 @@
 package ndk.pax.com.im.presenter
 
 import android.util.Log
+import cn.bmob.v3.BmobUser
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.SaveListener
 import com.hyphenate.EMCallBack
 import com.hyphenate.chat.EMClient
 import ndk.pax.com.im.adapter.EMCallBackAdapter
@@ -24,27 +27,33 @@ class RegisterPresenter(val view:RegisterContract.View):RegisterContract.Present
                           //账号 密码 确认密码都正确
                           view.onStartRegister();
                            //开始注册
-
+                            registerBmob(userName,password);
 
                       }else view.onConfirmPasswordError();
                   }else view.onPasswordError();
               }else view.onUserNameError();
 
-
     }
 
-//    override fun login(userName: String, password: String) {
-//              if(userName.isVaildName()){
-//                  //用户名合法
-//                  if(password.isValidPassword()){
-//                      //密码合法,开始登陆
-//
-//                      //登录到环信
-//                      loginEaseMob(userName,password);
-//                  }else view.onPasswordError();
-//              }else view.onUserNameError();
-//
-//    }
+    private fun registerBmob(userName: String, password: String) {
+        var bu=BmobUser();
+        bu.username=userName;
+        bu.setPassword(password);
+        bu.email="sendi@163.com";
+        bu.signUp<BmobUser>(object : SaveListener<BmobUser>() {
+            override fun done(p0: BmobUser?, e: BmobException?) {
+                    if(e==null){
+                        //注册成功
+
+                        //注册到环信
+                    }else{
+                        //注册失败
+                        view.onRegisterFaile();
+                    }
+
+            }
+        })
+    }
 
     //环信登陆
 //    private fun loginEaseMob(userName: String, password: String) {
