@@ -1,10 +1,18 @@
 package ndk.pax.com.im
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.inputmethod.InputMethod
+import android.view.inputmethod.InputMethodManager
 
 abstract class BaseActivity : AppCompatActivity() {
+    val inputMethodManager by lazy {
+        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+
      val progressDialog by lazy {
          ProgressDialog(this)
     }
@@ -28,5 +36,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun dismissProgress(){
         progressDialog.dismiss();
+    }
+
+    fun hideSoftKeyboard(){
+        inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken,0)
     }
 }
