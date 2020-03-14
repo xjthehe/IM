@@ -57,6 +57,10 @@ class LoginActivity:BaseActivity(),LoginContract.View{
 
     override fun init() {
         super.init()
+        //新用户注册
+        newUser.setOnClickListener {
+                startActivity<RegisterActivity>();
+        }
         login.setOnClickListener{login()}
         password.setOnEditorActionListener(object :TextView.OnEditorActionListener{
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
@@ -85,12 +89,14 @@ class LoginActivity:BaseActivity(),LoginContract.View{
         ActivityCompat.requestPermissions(this,permissions,0);
         //多次拒绝后，勾选不提示框，下面直接走else
     }
+
     //requestPermissions 回调函数
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
             login();
         }else toast(R.string.permission_denied);
     }
+
     //检查磁盘是否有权限
     private fun hasWriteExternalStoragePermission(): Boolean {
         val result=ActivityCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
