@@ -6,11 +6,14 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
 import com.hyphenate.EMCallBack
 import com.hyphenate.chat.EMClient
+import com.hyphenate.exceptions.HyphenateException
 import ndk.pax.com.im.adapter.EMCallBackAdapter
 import ndk.pax.com.im.contract.LoginContract
 import ndk.pax.com.im.contract.RegisterContract
 import ndk.pax.com.im.extentions.isVaildName
 import ndk.pax.com.im.extentions.isValidPassword
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * User：Rowen
@@ -23,10 +26,10 @@ class RegisterPresenter(val view:RegisterContract.View):RegisterContract.Present
     override fun register(userName: String, password: String, confirmPassword: String) {
               if(userName.isVaildName()){
                   if(password.isValidPassword()){
-                      if(password==confirmPassword){
+                      if(password.equals(confirmPassword)){
                           //账号 密码 确认密码都正确
                           view.onStartRegister();
-                           //开始注册
+                           //开始注册Bmob
                             registerBmob(userName,password);
 
                       }else view.onConfirmPasswordError();
@@ -39,20 +42,37 @@ class RegisterPresenter(val view:RegisterContract.View):RegisterContract.Present
         var bu=BmobUser();
         bu.username=userName;
         bu.setPassword(password);
-        bu.email="sendi@163.com";
+        bu.email="sendi@1632.com";
         bu.signUp<BmobUser>(object : SaveListener<BmobUser>() {
             override fun done(p0: BmobUser?, e: BmobException?) {
                     if(e==null){
                         //注册成功
-
+                            Log.e("signUp","Bmob 注册成功")
                         //注册到环信
+                        registerEaseMob(userName,password);
                     }else{
                         //注册失败
+                        Log.e("signUp","Bmob 注册失败"+e.errorCode)
+
                         view.onRegisterFaile();
                     }
 
             }
         })
+    }
+
+    private fun registerEaseMob(userName: String, password: String) {
+        Log.e("registerEaseMob","环信注册")
+
+        doAsync {
+            try {
+                EMClient.getInstance().createAccount(userName, password);//同步
+                uiThread { view.onRegisterSuccees() }
+            }catch (e: HyphenateException){
+                uiThread { view.onRegisterFaile() }
+            }
+            //注册失败会抛出HyphenateException
+        }
     }
 
     //环信登陆

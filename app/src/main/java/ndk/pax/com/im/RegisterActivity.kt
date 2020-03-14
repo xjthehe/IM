@@ -36,6 +36,7 @@ class RegisterActivity : BaseActivity(), RegisterContract.View {
 
     override fun onRegisterSuccees() {
         dismissProgress();
+        toast(R.string.register_success)
         startActivity<LoginActivity>()
     }
 
@@ -54,7 +55,7 @@ class RegisterActivity : BaseActivity(), RegisterContract.View {
     }
 
     fun register(){
-        hideSoftKeyboard();
+       // hideSoftKeyboard();
         val userName=userName.text.trim().toString();
         val passWord=password.text.trim().toString();
         val confirmPassWord=password.text.trim().toString();
