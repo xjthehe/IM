@@ -256,7 +256,42 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
     if(e.errorCode==202) view.onUserExit()
 
 ## 5.主界面
-    主界面布局以及包重构
+ ### 5.1主界面布局以及包重构
     ui
      --activity
      --fragment
+ ### 5.2 fragment切换
+    bottomBar.setOnTabSelectListener { tabId ->
+            val beginTransaction = supportFragmentManager.beginTransaction();
+            FragmentFactory.instance.getInstatance(tabId)?.let { beginTransaction.replace(R.id.fragment_frame, it) };
+        }
+
+        class FragmentFactory private constructor(){
+
+            val conversation by lazy {
+                ConversationFragment()
+            }
+
+            val contact by lazy {
+                ContactFragment()
+            }
+
+            val dynamic by lazy {
+                DynamicFragment()
+            }
+            //私有构造方法+伴生对象 单例实现
+            companion object {
+                val instance=FragmentFactory();
+            }
+
+                fun getInstatance(tabId:Int):Fragment?{
+                    Log.e("tabId","tabId"+tabId);
+                    when(tabId){
+                        R.layout.fragment_conversation->return conversation;
+                        R.layout.fragment_contacts->return contact;
+                        R.layout.fragment_dynamic->return dynamic;
+                    }
+                    return null;
+                }
+
+        }
