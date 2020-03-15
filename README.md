@@ -183,8 +183,8 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
     ### 3.注册界面V层协议
     ### 4.注册界面Model层协议
 
-    #### Bmob集成
-    [Bmob开发文档](http://doc.bmob.cn/data/android/index.html)
+### Bmob集成
+[Bmob开发文档](http://doc.bmob.cn/data/android/index.html)
 
     1.注册并创建应用
     2.下载SDK
