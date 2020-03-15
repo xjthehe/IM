@@ -13,7 +13,9 @@ class MainActivity : BaseActivity() {
         super.init()
         bottomBar.setOnTabSelectListener { tabId ->
             val beginTransaction = supportFragmentManager.beginTransaction();
-            FragmentFactory.instance.getInstatance(tabId)?.let { beginTransaction.replace(R.id.fragment_frame, it) };
+            beginTransaction.replace(R.id.fragment_frame, FragmentFactory.instance.getInstatance(tabId)!!);
+            beginTransaction.commit();//别忘了提交
+//            FragmentFactory.instance.getInstatance(tabId)?.let { beginTransaction.replace(R.id.fragment_frame, it) };
         }
     }
 }

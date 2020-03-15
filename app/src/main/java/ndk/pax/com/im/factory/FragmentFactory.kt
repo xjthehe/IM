@@ -32,12 +32,12 @@ class FragmentFactory private constructor(){
         val instance=FragmentFactory();
     }
 
-        fun getInstatance(tabId:Int):Fragment?{
+        fun getInstatance(tabId:Int): Fragment? {
             Log.e("tabId","tabId"+tabId);
             when(tabId){
-                R.layout.fragment_conversation->return conversation;
-                R.layout.fragment_contacts->return contact;
-                R.layout.fragment_dynamic->return dynamic;
+                R.id.tab_conversation->return conversation;
+                R.id.tab_contacts->return contact;
+                R.id.tab_dynamic->return dynamic;
             }
             return null;
         }

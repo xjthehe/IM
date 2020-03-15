@@ -293,5 +293,5 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
                     }
                     return null;
                 }
-
         }
+## 6.动态界面
