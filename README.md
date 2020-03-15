@@ -212,7 +212,7 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
         //Bmob
         Bmob.initialize(applicationContext,"2ee4708569a21a8922b2020ab5a365b7");
 
-### [注册用户到Bmob](http://doc.bmob.cn/data/android/index.html#_4)
+[注册用户到Bmob](http://doc.bmob.cn/data/android/index.html#_4)
          private fun registerBmob(userName: String, password: String) {
                 var bu=BmobUser();
                 bu.username=userName;
