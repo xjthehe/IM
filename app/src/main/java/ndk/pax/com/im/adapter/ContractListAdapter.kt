@@ -5,7 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import ndk.pax.com.im.data.ContactListItem
+import ndk.pax.com.im.ui.activity.ChatActivity
+import ndk.pax.com.im.ui.activity.MainActivity
 import ndk.pax.com.im.widget.ContractListItemView
+import org.jetbrains.anko.startActivity
 
 /**
  * User：Rowen
@@ -25,6 +28,12 @@ class ContractListAdapter(val context: Context, val contactItems: MutableList<Co
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         val contractListItemView = holder?.itemView as ContractListItemView
         contractListItemView.bindView(contactItems[position])
+        //获取当前item的用户名
+        val ueusername=contactItems.get(position).username
+        //添加绑定事件
+        contractListItemView.setOnClickListener {
+            context.startActivity<ChatActivity>("ueusername" to ueusername)
+        }
     }
 
     class ContractItemViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {

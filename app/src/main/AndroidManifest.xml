@@ -45,6 +45,7 @@
         <activity android:name="ndk.pax.com.im.ui.activity.MainActivity"></activity>
 
         <activity android:name=".ui.activity.RegisterActivity"></activity>
+        <activity android:name=".ui.activity.ChatActivity" />
 
         <!-- 设置环信应用的AppKey -->
         <meta-data android:name="EASEMOB_APPKEY"  android:value="1150170808115928#pax-im" />
