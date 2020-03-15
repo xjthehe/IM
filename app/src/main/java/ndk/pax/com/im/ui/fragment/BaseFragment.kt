@@ -1,4 +1,4 @@
-package ndk.pax.com.im
+package ndk.pax.com.im.ui.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
