@@ -23,11 +23,12 @@
             </android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <!--<com.itheima.im.widget.SlideBar-->
-            <!--android:id="@+id/slideBar"-->
-            <!--android:layout_width="20dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_gravity="right"/>-->
+        <ndk.pax.com.im.widget.SlideBar
+            android:id="@+id/slideBar"
+            android:layout_width="20dp"
+            android:background="#f00"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"/>
 
         <TextView
             android:id="@+id/section"
