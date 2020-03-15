@@ -41,6 +41,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.AddFriendActivity"></activity>
+
         <activity android:name=".ui.activity.LoginActivity"></activity>
         <activity android:name="ndk.pax.com.im.ui.activity.MainActivity"></activity>
 

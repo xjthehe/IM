@@ -17,7 +17,6 @@ import ndk.pax.com.im.data.ContactListItem
 
 class ContractListItemView(context: Context?, attrs: AttributeSet?=null) : RelativeLayout(context, attrs) {
 
-
     init {
         View.inflate(context, R.layout.view_contact_item,this)
     }

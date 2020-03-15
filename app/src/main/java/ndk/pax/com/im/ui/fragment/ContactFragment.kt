@@ -2,6 +2,7 @@ package ndk.pax.com.im.ui.fragment
 
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.header.*
@@ -13,6 +14,10 @@ import org.jetbrains.anko.toast
 import com.hyphenate.EMContactListener
 import com.hyphenate.chat.EMClient
 import ndk.pax.com.im.adapter.EMContactListenerAdapter
+import ndk.pax.com.im.ui.activity.AddFriendActivity
+import ndk.pax.com.im.ui.activity.MainActivity
+import ndk.pax.com.im.widget.SlideBar
+import org.jetbrains.anko.startActivity
 
 
 /**
@@ -45,6 +50,14 @@ class ContactFragment:BaseFragment(), ContactContract.View{
         headerTitle.text=getString(R.string.contact)
         add.visibility= View.VISIBLE
 
+        //添加好友
+        add.setOnClickListener {
+            context?.startActivity<AddFriendActivity>()
+        }
+
+
+
+
         swipeRefreshLayout.apply {
             setColorSchemeResources(R.color.qq_blue)
             isRefreshing=true
@@ -66,14 +79,29 @@ class ContactFragment:BaseFragment(), ContactContract.View{
                 //重新获取联系人
                 contactPresnter.loadContracts()
             }
-
         })
 
-
-
+        slideBar.onSectionChangeListener=object :SlideBar.OnSectionChangeListener{
+            override fun onSectionChange(firstletter: String) {
+                section.visibility=View.VISIBLE
+                section.text=firstletter
+                //recyclerView滑动到字母对应的下标
+                Log.e("letter",firstletter)
+                recyclerView.smoothScrollToPosition(getPosition(firstletter))
+            }
+            override fun onSlideFinish() {
+                section.visibility=View.GONE
+            }
+        }
         //加载联系人 P层触发
         contactPresnter.loadContracts()
     }
 
-    
+        private fun getPosition(firstletter: String): Int =
+                contactPresnter.contactItems.binarySearch {
+                    contactListItem ->contactListItem.firstLetter.minus(firstletter[0])
+                }
+
+
+
 }

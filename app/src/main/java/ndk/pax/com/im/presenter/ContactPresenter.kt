@@ -41,11 +41,6 @@ class ContactPresenter(val view:ContactContract.View):ContactContract.Presenter{
                         contactItems.add(contactItem)
                     }
 
-
-                    username.forEach {
-
-                    }
-
                     uiThread {
                         view.onLoadContractSuccess()
                     }
