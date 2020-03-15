@@ -6,6 +6,9 @@ import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.header.*
 import ndk.pax.com.im.R
 import ndk.pax.com.im.adapter.ContractListAdapter
+import ndk.pax.com.im.contract.ContactContract
+import ndk.pax.com.im.presenter.ContactPresenter
+import org.jetbrains.anko.toast
 
 /**
  * User：Rowen
@@ -14,7 +17,22 @@ import ndk.pax.com.im.adapter.ContractListAdapter
  *
  */
 
-class ContactFragment:BaseFragment(){
+class ContactFragment:BaseFragment(), ContactContract.View{
+    val contactPresnter by lazy {
+        ContactPresenter(this)
+    }
+
+   //加载成功
+    override fun onLoadContractSuccess() {
+        swipeRefreshLayout.isRefreshing=false
+        recyclerView.adapter.notifyDataSetChanged()
+    }
+    //加载失败
+    override fun onLoadContractFailed() {
+        swipeRefreshLayout.isRefreshing=false
+        context?.toast(R.string.load_contacts_failed)
+    }
+
     override fun getLayoutId(): Int = R.layout.fragment_contacts;
 
     override fun init() {
@@ -30,11 +48,12 @@ class ContactFragment:BaseFragment(){
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager=LinearLayoutManager(context)
-            adapter=ContractListAdapter(context)
+            adapter=ContractListAdapter(context,contactPresnter.contactItems)
         }
 
 
-
+        //加载联系人 P层触发
+        contactPresnter.loadContracts()
     }
 
     

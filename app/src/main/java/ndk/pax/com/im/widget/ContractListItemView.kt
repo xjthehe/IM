@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
+import kotlinx.android.synthetic.main.view_contact_item.view.*
 import ndk.pax.com.im.R
+import ndk.pax.com.im.data.ContactListItem
 
 /**
  * User：Rowen
@@ -15,9 +17,16 @@ import ndk.pax.com.im.R
 
 class ContractListItemView(context: Context?, attrs: AttributeSet?=null) : RelativeLayout(context, attrs) {
 
+
     init {
         View.inflate(context, R.layout.view_contact_item,this)
     }
 
+
+
+    fun bindView(contactListItem: ContactListItem) {
+            firstLetter.text= contactListItem.firstLetter.toString()
+            userName.text=contactListItem.username.toString()
+    }
 
 }
