@@ -178,3 +178,78 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
     1.如果注册成功，跳转登录界面
     2.如果注册失败，提示错误信息
     3.注册先注册到Bmob，然后到环信后台。
+    ### 1.注册界面MVP协议
+    ### 2.注册界面P层协议
+    ### 3.注册界面V层协议
+    ### 4.注册界面Model层协议
+
+    #### Bmob集成
+    [Bmob开发文档](http://doc.bmob.cn/data/android/index.html)
+
+    1.注册并创建应用
+    2.下载SDK
+
+        1.在 Project 的 build.gradle 文件中添加 Bmob的maven仓库地址：
+        allprojects {
+            repositories {
+                google()
+                jcenter()
+                maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+            }
+        }
+
+        2.在app的build.gradle文件中添加依赖文件：
+          ndk {
+                 // 设置支持的 SO 库构架，注意这里要根据你的实际情况来设置
+                    abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86'
+              }
+             useLibrary 'org.apache.http.legacy'
+
+
+            implementation 'cn.bmob.android:bmob-sdk:3.6.6'
+
+       3.初始化Bmob的SDK
+        //Bmob
+        Bmob.initialize(applicationContext,"2ee4708569a21a8922b2020ab5a365b7");
+
+
+    #### [注册用户到Bmob](http://doc.bmob.cn/data/android/index.html#_4)
+         private fun registerBmob(userName: String, password: String) {
+                var bu=BmobUser();
+                bu.username=userName;
+                bu.setPassword(password);
+                bu.email="sendi@1632.com";
+                bu.signUp<BmobUser>(object : SaveListener<BmobUser>() {
+                    override fun done(p0: BmobUser?, e: BmobException?) {
+                            if(e==null){
+                                //注册成功
+                                    Log.e("signUp","Bmob 注册成功")
+                                //注册到环信
+                                registerEaseMob(userName,password);
+                            }else{
+                                //注册失败
+                                Log.e("signUp","Bmob 注册失败"+e.errorCode)
+
+                                view.onRegisterFaile();
+                            }
+
+                    }
+                })
+            }
+
+         #### [注册用户到环信](http://docs-im.easemob.com/im/android/sdk/basic#%E6%B3%A8%E5%86%8C)
+          private fun registerEaseMob(userName: String, password: String) {
+                Log.e("registerEaseMob","环信注册")
+
+                doAsync {
+                    try {
+                        EMClient.getInstance().createAccount(userName, password);//同步
+                        uiThread { view.onRegisterSuccees() }
+                    }catch (e: HyphenateException){
+                        uiThread { view.onRegisterFaile() }
+                    }
+                    //注册失败会抛出HyphenateException
+                }
+            }
+
+
