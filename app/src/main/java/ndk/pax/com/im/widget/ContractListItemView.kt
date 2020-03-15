@@ -8,7 +8,7 @@ import ndk.pax.com.im.R
 
 /**
  * User：Rowen
- * Description:
+ * Description:自定义控件 说白了就是适配器item布局 写成一个自定义控件(布局)
  * 时间: 2020/3/15:13:58
  *
  */

@@ -20,6 +20,7 @@ class ContractListAdapter(val context:Context) : RecyclerView.Adapter<RecyclerVi
 
     override fun getItemCount(): Int =30
 
+    //暂时无数据 不绑定
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
 
     }
