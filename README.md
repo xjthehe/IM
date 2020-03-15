@@ -175,5 +175,6 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
 
 
 ## 4.注册界面功能需求
-### 1.如果没有登录，延时2s，跳转登录界面
-### 2.如果跳转主界面登录，
+### 1.如果注册成功，跳转登录界面
+### 2.如果注册失败，提示错误信息
+### 3.注册先注册到Bmob，然后到环信后台。
