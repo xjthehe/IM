@@ -25,7 +25,12 @@ class ContractListItemView(context: Context?, attrs: AttributeSet?=null) : Relat
 
 
     fun bindView(contactListItem: ContactListItem) {
-            firstLetter.text= contactListItem.firstLetter.toString()
+        //是否显示首字母
+            if(contactListItem.showFirstLetter){
+                firstLetter.visibility=View.VISIBLE
+                firstLetter.text= contactListItem.firstLetter.toString()
+            }else firstLetter.visibility=View.GONE
+
             userName.text=contactListItem.username.toString()
     }
 

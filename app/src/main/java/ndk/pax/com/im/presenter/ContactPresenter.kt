@@ -28,9 +28,20 @@ class ContactPresenter(val view:ContactContract.View):ContactContract.Presenter{
                     //获取当前用户名好友列表，注意，默认新用户没有好友，可以去环信后台自行添加好友
                     val username= EMClient.getInstance().contactManager().allContactsFromServer
                     Log.e("username","username"+username.size)
-                    username.forEach {
-                        val contactItem=ContactListItem(it,it[0].toUpperCase())
+
+                    //username根据首字母排序
+                    username.sortBy { it[0] }
+
+                    username.forEachIndexed { index, s ->
+                        //判断是否显示首字母,当前首字母和前一个数据首字母不相同,则需要显示首字母
+                        val showFirstLetter=index==0||s[0]!=username[index-1][0]
+                        val contactItem=ContactListItem(s,s[0].toUpperCase(),showFirstLetter)
                         contactItems.add(contactItem)
+                    }
+
+
+                    username.forEach {
+
                     }
 
                     uiThread {

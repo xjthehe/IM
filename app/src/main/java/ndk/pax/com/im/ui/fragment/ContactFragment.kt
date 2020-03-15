@@ -1,6 +1,7 @@
 package ndk.pax.com.im.ui.fragment
 
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.header.*
@@ -44,10 +45,12 @@ class ContactFragment:BaseFragment(), ContactContract.View{
             setColorSchemeResources(R.color.qq_blue)
             isRefreshing=true
         }
+
         //recycleView
         recyclerView.apply {
             setHasFixedSize(true)
-            layoutManager=LinearLayoutManager(context)
+            layoutManager= LinearLayoutManager(context) as RecyclerView.LayoutManager?
+            contactPresnter.contactItems.clear()
             adapter=ContractListAdapter(context,contactPresnter.contactItems)
         }
 
