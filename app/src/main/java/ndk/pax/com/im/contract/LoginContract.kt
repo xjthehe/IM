@@ -7,22 +7,17 @@ package ndk.pax.com.im.contract
  *
  */
 
-interface LoginContract{
+interface LoginContract {
 
-    interface Presenter:BasePresenter{
-        fun login(userName:String,password:String);
+    interface Presenter : BasePresenter {
+        fun login(userName: String, password: String);
     }
 
-    interface View{
+    interface View {
         fun onUserNameError();
         fun onPasswordError();
         fun onStartLogin();
         fun onLoginSuccees()
         fun onLoginFaile()
-
-
-
-
     }
-
 }

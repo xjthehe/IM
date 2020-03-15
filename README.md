@@ -36,7 +36,7 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
 
 ## 2.功能需求
 ### 1.如果没有登录，延时2s，跳转登录界面
-### 2.如果登录，跳转主界面
+### 2.如果跳转主界面登录，
 
 
 ## MVP实现
@@ -62,7 +62,7 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
             return false;
         }
     }
-## 3.Model层实现
+## 3.登录界面实现
 ### 3.1环信集成
 [1.注册并创建应用](http://docs.easemob.com/cs/start)
 
@@ -71,5 +71,109 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
 [3.Android SDK导入](http://docs-im.easemob.com/im/android/sdk/import)
 
 [4.SDK初始化](http://docs-im.easemob.com/im/android/sdk/basic)
+### 3.2登录界面MVP协议
+    interface LoginContract {
+
+        interface Presenter : BasePresenter {
+            fun login(userName: String, password: String);
+        }
+
+        interface View {
+            fun onUserNameError();
+            fun onPasswordError();
+            fun onStartLogin();
+            fun onLoginSuccees()
+            fun onLoginFaile()
+        }
+    }
+### 3.3登录界面View层实现
+    interface View {
+            fun onUserNameError();
+            fun onPasswordError();
+            fun onStartLogin();
+            fun onLoginSuccees()
+            fun onLoginFaile()
+        }
+
+### 3.4登录界面Presenter层实现
+
+#### 用户输入校验
+    1.用户名长度必须是3-20位，首字母必须是英文字母，其他字符除英文外还可以是数字或者下划线
+    2.密码必须是3-20位数字。
+    fun String.isVaildName():Boolean=this.matches(kotlin.text.Regex("^[a-zA-Z]\\w{2,19}$"));
+    fun String.isValidPassword(): Boolean = this.matches(Regex("^[0-9]{3,20}$"));
+
+#### p层实现
+
+    class LoginPresenter(val view:LoginContract.View):LoginContract.Presenter{
+        override fun login(userName: String, password: String) {
+                  if(userName.isVaildName()){
+                      //用户名合法
+                      if(password.isValidPassword()){
+                          //密码合法,开始登陆
+                          view.onStartLogin();
+                          //登录到环信
+                          loginEaseMob(userName,password);
+                      }else view.onPasswordError();
+                  }else view.onUserNameError();
+        }
+
+### 3.5登录界面Model层实现
+    #### 登录只需要登录到环信服务器
+            登录成功后需要调用EMClient.getInstance().chatManager().loadAllConversations();和EMClient.getInstance().groupManager().loadAllGroups();。
+            以上两个方法是为了保证进入主页面后本地会话和群组都 load 完毕
+         EMClient.getInstance().groupManager().loadAllGroups();
+                        EMClient.getInstance().chatManager().loadAllConversations();
+                        Log.d("main", "登录聊天服务器成功！");
+                        //在子线程通知view
+                            uiThread {
+                                view.onLoginSuccees();
+                            }
+
+                    }
+    #### 隐藏软键盘
+     val inputMethodManager by lazy {
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        }
+
+    fun hideSoftKeyboard(){
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken,0)
+        }
+
+    #### 动态权限申请
+
+ if(hasWriteExternalStoragePermission()){
+            val userNameString=userName.text.trim().toString();
+            val passwordString=password.text.trim().toString();
+            presenter.login(userNameString,passwordString);
+        }else{
+            applyWriteExternalStoragePermission();
+        }
+
+         //请求权限
+            private fun applyWriteExternalStoragePermission() {
+                val permissions= arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(this,permissions,0);
+                //多次拒绝后，勾选不提示框，下面直接走else
+            }
+
+            //requestPermissions 回调函数
+            override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    login();
+                }else toast(R.string.permission_denied);
+            }
+
+            //检查磁盘是否有权限
+            private fun hasWriteExternalStoragePermission(): Boolean {
+                val result=ActivityCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                return result==PackageManager.PERMISSION_GRANTED;
+            }
 
 
+
+
+
+## 4.注册界面功能需求
+### 1.如果没有登录，延时2s，跳转登录界面
+### 2.如果跳转主界面登录，

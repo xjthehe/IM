@@ -83,7 +83,7 @@ class LoginActivity:BaseActivity(),LoginContract.View{
         }
 
     }
-
+    //请求权限
     private fun applyWriteExternalStoragePermission() {
         val permissions= arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         ActivityCompat.requestPermissions(this,permissions,0);
