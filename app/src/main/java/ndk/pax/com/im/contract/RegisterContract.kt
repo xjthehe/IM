@@ -20,6 +20,7 @@ interface RegisterContract{
         fun onStartRegister();
         fun onRegisterSuccees()
         fun onRegisterFaile()
+        fun onUserExit();
     }
 
 

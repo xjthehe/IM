@@ -14,6 +14,10 @@ import org.jetbrains.anko.toast
  */
 
 class RegisterActivity : BaseActivity(), RegisterContract.View {
+    override fun onUserExit() {
+        dismissProgress();
+        toast(R.string.user_already_exist);
+    }
 
     val presenter by lazy { RegisterPresenter(this) }
 

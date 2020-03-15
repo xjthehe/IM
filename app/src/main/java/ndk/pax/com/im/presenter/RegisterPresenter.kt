@@ -53,7 +53,7 @@ class RegisterPresenter(val view:RegisterContract.View):RegisterContract.Present
                     }else{
                         //注册失败
                         Log.e("signUp","Bmob 注册失败"+e.errorCode)
-
+                        if(e.errorCode==202) view.onUserExit()
                         view.onRegisterFaile();
                     }
 
@@ -63,7 +63,6 @@ class RegisterPresenter(val view:RegisterContract.View):RegisterContract.Present
 
     private fun registerEaseMob(userName: String, password: String) {
         Log.e("registerEaseMob","环信注册")
-
         doAsync {
             try {
                 EMClient.getInstance().createAccount(userName, password);//同步
