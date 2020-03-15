@@ -295,3 +295,24 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
                 }
         }
 ## 6.动态界面
+### 6.1 退出登录
+      fun logout(){
+            EMClient.getInstance().logout(true, object : EMCallBackAdapter() {
+                override fun onSuccess() {
+                    context?.runOnUiThread {
+                        context?.toast(R.string.logout_success)
+                        context?.startActivity<LoginActivity>()
+                        activity?.finish();
+                    }
+                }
+                override fun onError(p0: Int, p1: String?) {
+                    //切换主线程
+                    context?.runOnUiThread {
+                        toast(R.string.logout_failed)
+                    }
+                }
+            })
+        }
+
+## 7.联系人界面
+
