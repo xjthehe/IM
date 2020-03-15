@@ -24,6 +24,8 @@ class ContactPresenter(val view:ContactContract.View):ContactContract.Presenter{
     //加载联系人
     override fun loadContracts() {
         doAsync {
+            //再次添加时候，先删除集合
+            contactItems.clear()
                 try {
                     //获取当前用户名好友列表，注意，默认新用户没有好友，可以去环信后台自行添加好友
                     val username= EMClient.getInstance().contactManager().allContactsFromServer

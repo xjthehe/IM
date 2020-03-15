@@ -10,6 +10,10 @@ import ndk.pax.com.im.adapter.ContractListAdapter
 import ndk.pax.com.im.contract.ContactContract
 import ndk.pax.com.im.presenter.ContactPresenter
 import org.jetbrains.anko.toast
+import com.hyphenate.EMContactListener
+import com.hyphenate.chat.EMClient
+import ndk.pax.com.im.adapter.EMContactListenerAdapter
+
 
 /**
  * User：Rowen
@@ -53,6 +57,18 @@ class ContactFragment:BaseFragment(), ContactContract.View{
             contactPresnter.contactItems.clear()
             adapter=ContractListAdapter(context,contactPresnter.contactItems)
         }
+
+
+
+        //联系人状态监听器
+        EMClient.getInstance().contactManager().setContactListener(object : EMContactListenerAdapter() {
+            override fun onContactDeleted(p0: String?) {
+                //重新获取联系人
+                contactPresnter.loadContracts()
+            }
+
+        })
+
 
 
         //加载联系人 P层触发
