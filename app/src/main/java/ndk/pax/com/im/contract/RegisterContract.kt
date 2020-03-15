@@ -21,6 +21,7 @@ interface RegisterContract{
         fun onRegisterSuccees()
         fun onRegisterFaile()
         fun onUserExit();
+        fun onEmaiExit()
     }
 
 

@@ -15,6 +15,12 @@ import org.jetbrains.anko.toast
  */
 
 class RegisterActivity : BaseActivity(), RegisterContract.View {
+    //邮箱已经存在
+    override fun onEmaiExit() {
+        dismissProgress();
+        toast(R.string.email_already_exist);
+    }
+
     override fun onUserExit() {
         dismissProgress();
         toast(R.string.user_already_exist);

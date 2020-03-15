@@ -39,6 +39,7 @@ class LoginActivity: BaseActivity(),LoginContract.View{
         //隐藏进度条
         dismissProgress();
         //进入主界面
+
         startActivity<MainActivity>();
         //退出loging
         finish();

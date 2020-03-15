@@ -42,7 +42,7 @@ class RegisterPresenter(val view:RegisterContract.View):RegisterContract.Present
         var bu=BmobUser();
         bu.username=userName;
         bu.setPassword(password);
-        bu.email="sendi@1632.com";
+//        bu.email="sendi@1632.com";
         bu.signUp<BmobUser>(object : SaveListener<BmobUser>() {
             override fun done(p0: BmobUser?, e: BmobException?) {
                     if(e==null){
@@ -54,6 +54,8 @@ class RegisterPresenter(val view:RegisterContract.View):RegisterContract.Present
                         //注册失败
                         Log.e("signUp","Bmob 注册失败"+e.errorCode)
                         if(e.errorCode==202) view.onUserExit()
+                        if(e.errorCode==203) view.onEmaiExit()
+
                         view.onRegisterFaile();
                     }
 
