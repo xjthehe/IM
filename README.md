@@ -119,7 +119,7 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
         }
 
 ### 3.5登录界面Model层实现
-    #### 登录只需要登录到环信服务器
+    登录只需要登录到环信服务器
             登录成功后需要调用EMClient.getInstance().chatManager().loadAllConversations();和EMClient.getInstance().groupManager().loadAllGroups();。
             以上两个方法是为了保证进入主页面后本地会话和群组都 load 完毕
          EMClient.getInstance().groupManager().loadAllGroups();
@@ -131,7 +131,7 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
                             }
 
                     }
-    #### 隐藏软键盘
+    隐藏软键盘
      val inputMethodManager by lazy {
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         }
@@ -140,7 +140,7 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
             inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken,0)
         }
 
-    #### 动态权限申请
+    动态权限申请
 
  if(hasWriteExternalStoragePermission()){
             val userNameString=userName.text.trim().toString();
