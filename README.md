@@ -255,3 +255,8 @@ https://github.com/xjthehe/IM/blob/master/app/src/main/res/mipmap-hdpi/zy.jpg
 ### 用户注册已重复处理
     if(e.errorCode==202) view.onUserExit()
 
+## 5.主界面
+    主界面布局以及包重构
+    ui
+     --activity
+     --fragment
