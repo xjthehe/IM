@@ -7,4 +7,4 @@ package ndk.pax.com.im.data
  *
  */
 
-data class AddFriendListItem(val username:String,val timestamp:String,val add:Boolean?=false)
+data class AddFriendListItem(val username:String,val timestamp:String,val add:Boolean)

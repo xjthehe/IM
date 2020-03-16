@@ -32,6 +32,22 @@ class ContactFragment:BaseFragment(), ContactContract.View{
         ContactPresenter(this)
     }
 
+
+    val contactListtener=object : EMContactListenerAdapter() {
+        override fun onContactDeleted(p0: String?) {
+            //重新获取联系人
+            contactPresnter.loadContracts()
+        }
+
+        //添加好友成功
+        override fun onContactAdded(p0: String?) {
+            //重新获取联系人
+            contactPresnter.loadContracts()
+        }
+    }
+
+
+
    //加载成功
     override fun onLoadContractSuccess() {
         swipeRefreshLayout.isRefreshing=false
@@ -47,61 +63,68 @@ class ContactFragment:BaseFragment(), ContactContract.View{
 
     override fun init() {
         super.init()
-        headerTitle.text=getString(R.string.contact)
-        add.visibility= View.VISIBLE
+        initHeader()
+        initSwipRefreshLayout()
+        initRecycleView()
+        //联系人状态监听器
+        EMClient.getInstance().contactManager().setContactListener(contactListtener)
+        initSliderBar()
+        //加载联系人 P层触发
+        contactPresnter.loadContracts()
+    }
+
+    private fun initSliderBar() {
+        slideBar.onSectionChangeListener = object : SlideBar.OnSectionChangeListener {
+            override fun onSectionChange(firstletter: String) {
+                section.visibility = View.VISIBLE
+                section.text = firstletter
+                //recyclerView滑动到字母对应的下标
+                Log.e("letter", firstletter)
+                recyclerView.smoothScrollToPosition(getPosition(firstletter))
+            }
+
+            override fun onSlideFinish() {
+                section.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun initRecycleView() {
+        recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
+            contactPresnter.contactItems.clear()
+            adapter = ContractListAdapter(context, contactPresnter.contactItems)
+        }
+    }
+
+    private fun initSwipRefreshLayout() {
+        swipeRefreshLayout.apply {
+            setColorSchemeResources(R.color.qq_blue)
+            isRefreshing = true
+            setOnRefreshListener { contactPresnter.loadContracts() }
+        }
+    }
+
+    private fun initHeader() {
+        headerTitle.text = getString(R.string.contact)
+        add.visibility = View.VISIBLE
 
         //添加好友
         add.setOnClickListener {
             context?.startActivity<AddFriendActivity>()
         }
-
-
-
-
-        swipeRefreshLayout.apply {
-            setColorSchemeResources(R.color.qq_blue)
-            isRefreshing=true
-        }
-
-        //recycleView
-        recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager= LinearLayoutManager(context) as RecyclerView.LayoutManager?
-            contactPresnter.contactItems.clear()
-            adapter=ContractListAdapter(context,contactPresnter.contactItems)
-        }
-
-
-
-        //联系人状态监听器
-        EMClient.getInstance().contactManager().setContactListener(object : EMContactListenerAdapter() {
-            override fun onContactDeleted(p0: String?) {
-                //重新获取联系人
-                contactPresnter.loadContracts()
-            }
-        })
-
-        slideBar.onSectionChangeListener=object :SlideBar.OnSectionChangeListener{
-            override fun onSectionChange(firstletter: String) {
-                section.visibility=View.VISIBLE
-                section.text=firstletter
-                //recyclerView滑动到字母对应的下标
-                Log.e("letter",firstletter)
-                recyclerView.smoothScrollToPosition(getPosition(firstletter))
-            }
-            override fun onSlideFinish() {
-                section.visibility=View.GONE
-            }
-        }
-        //加载联系人 P层触发
-        contactPresnter.loadContracts()
     }
 
-        private fun getPosition(firstletter: String): Int =
+    private fun getPosition(firstletter: String): Int =
                 contactPresnter.contactItems.binarySearch {
                     contactListItem ->contactListItem.firstLetter.minus(firstletter[0])
                 }
 
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        EMClient.getInstance().contactManager().
+                removeContactListener(contactListtener)
+    }
 }

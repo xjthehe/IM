@@ -7,6 +7,8 @@ import com.hyphenate.exceptions.HyphenateException
 import ndk.pax.com.im.contract.BasePresenter
 import ndk.pax.com.im.contract.ContactContract
 import ndk.pax.com.im.data.ContactListItem
+import ndk.pax.com.im.data.db.Contact
+import ndk.pax.com.im.data.db.IMDatabase
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -26,6 +28,9 @@ class ContactPresenter(val view:ContactContract.View):ContactContract.Presenter{
         doAsync {
             //再次添加时候，先删除集合
             contactItems.clear()
+            //清空数据库
+            IMDatabase.instance.deleteAllContact()
+
                 try {
                     //获取当前用户名好友列表，注意，默认新用户没有好友，可以去环信后台自行添加好友
                     val username= EMClient.getInstance().contactManager().allContactsFromServer
@@ -39,6 +44,10 @@ class ContactPresenter(val view:ContactContract.View):ContactContract.Presenter{
                         val showFirstLetter=index==0||s[0]!=username[index-1][0]
                         val contactItem=ContactListItem(s,s[0].toUpperCase(),showFirstLetter)
                         contactItems.add(contactItem)
+                        //添加到数据库
+                        val contact=Contact(mutableMapOf("name" to s))
+                        IMDatabase.instance.saveContact(contact)
+
                     }
 
                     uiThread {
