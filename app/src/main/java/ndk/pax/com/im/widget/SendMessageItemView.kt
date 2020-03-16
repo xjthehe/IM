@@ -24,8 +24,8 @@ class SendMessageItemView(context: Context?, attrs: AttributeSet?=null) : Relati
         View.inflate(context, R.layout.view_send_message_item,this)
     }
 
-    fun bindView(emMessage: EMMessage) {
-        updateTimestap(emMessage)
+    fun bindView(emMessage: EMMessage, showTimestamp: Boolean) {
+        updateTimestap(emMessage,showTimestamp)
         updateMessage(emMessage)
         updateProgress(emMessage)
     }
@@ -59,8 +59,11 @@ class SendMessageItemView(context: Context?, attrs: AttributeSet?=null) : Relati
     }
 
     //更新时间戳
-    private fun updateTimestap(emMessage: EMMessage) {
-        timestamp.text= DateUtils.getTimestampString(Date(emMessage.msgTime))
+    private fun updateTimestap(emMessage: EMMessage, showTimestamp: Boolean) {
+        if(showTimestamp){
+            timestamp.visibility=View.VISIBLE
+            timestamp.text= DateUtils.getTimestampString(Date(emMessage.msgTime))
+        }else timestamp.visibility=View.GONE
     }
 
 }
