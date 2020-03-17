@@ -2,8 +2,8 @@ package ndk.pax.com.im.contract
 
 /**
  * User：Rowen
- * Description:
- * 时间: 2020/3/15:21:28
+ * Description:添加好友界面MVP协议
+ * * 时间: 2020/3/15:21:28
  *
  */
 

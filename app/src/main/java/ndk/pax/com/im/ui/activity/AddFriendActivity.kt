@@ -21,13 +21,14 @@ import org.jetbrains.anko.toast
 
 class AddFriendActivity :BaseActivity(),AddFriendContract.View{
     val presenter by lazy { AddFriendPresenter(this) }
-    //搜索朋友成功
+
+    //view层实现 搜索朋友成功
     override fun searchFriendSuccess() {
         dismissProgress()
         toast(R.string.send_add_friend_success)
         recyclerView.adapter.notifyDataSetChanged()
     }
-    //搜索失败
+    //view层实现 搜索失败
     override fun searchFriendFail() {
             dismissProgress()
             toast(R.string.send_add_friend_failed)

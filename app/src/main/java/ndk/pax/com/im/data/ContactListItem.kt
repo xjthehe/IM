@@ -2,8 +2,8 @@ package ndk.pax.com.im.data
 
 /**
  * User：Rowen
- * Description:
- * 时间: 2020/3/15:14:47
+ * Description:联系人数据bean对象
+ * * 时间: 2020/3/15:14:47
  *
  */
 

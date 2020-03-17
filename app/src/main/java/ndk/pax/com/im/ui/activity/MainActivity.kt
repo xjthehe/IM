@@ -2,6 +2,8 @@ package ndk.pax.com.im.ui.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.hyphenate.EMConnectionListener
+import com.hyphenate.EMError
 import com.hyphenate.chat.EMClient
 import com.hyphenate.chat.EMMessage
 import kotlinx.android.synthetic.main.activity_main.*
@@ -9,6 +11,8 @@ import ndk.pax.com.im.R
 import ndk.pax.com.im.adapter.EMMessageListenerAdapter
 import ndk.pax.com.im.factory.FragmentFactory
 import org.jetbrains.anko.runOnUiThread
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 
 class MainActivity : BaseActivity() {
     override fun getLayoutResId(): Int=R.layout.activity_main;
@@ -31,6 +35,20 @@ class MainActivity : BaseActivity() {
 //            FragmentFactory.instance.getInstatance(tabId)?.let { beginTransaction.replace(R.id.fragment_frame, it) };
         }
         EMClient.getInstance().chatManager().addMessageListener(messageListener)
+        EMClient.getInstance().addConnectionListener(object : EMConnectionListener{
+            override fun onConnected() {
+
+            }
+
+            override fun onDisconnected(p0: Int) {
+                //发生在多设备登录，跳转登录界面
+                if(p0== EMError.USER_LOGIN_ANOTHER_DEVICE){
+                        toast(R.string.user_login_another_device)
+                        startActivity<LoginActivity>()
+                        finish()
+                    }
+            }
+        })
     }
 
     //bootBar显示未读会话所有消息

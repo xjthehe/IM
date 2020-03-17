@@ -114,8 +114,6 @@ class SlideBar(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
     interface OnSectionChangeListener{
         fun onSectionChange(firstletter:String)//按下或者滑动
         fun onSlideFinish()//滑动结束
-
-
     }
 
 }

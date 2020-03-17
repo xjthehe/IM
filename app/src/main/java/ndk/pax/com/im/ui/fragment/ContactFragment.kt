@@ -31,8 +31,6 @@ class ContactFragment:BaseFragment(), ContactContract.View{
     val contactPresnter by lazy {
         ContactPresenter(this)
     }
-
-
     val contactListtener=object : EMContactListenerAdapter() {
         override fun onContactDeleted(p0: String?) {
             //重新获取联系人
@@ -48,7 +46,7 @@ class ContactFragment:BaseFragment(), ContactContract.View{
 
 
 
-   //加载成功
+   //view层实现  加载成功
     override fun onLoadContractSuccess() {
         swipeRefreshLayout.isRefreshing=false
         recyclerView.adapter.notifyDataSetChanged()
@@ -61,18 +59,19 @@ class ContactFragment:BaseFragment(), ContactContract.View{
 
     override fun getLayoutId(): Int = R.layout.fragment_contacts;
 
+    //初始化
     override fun init() {
         super.init()
         initHeader()
         initSwipRefreshLayout()
         initRecycleView()
-        //联系人状态监听器
+        //联系人状态监听器，当联系人被删除，会监听回调
         EMClient.getInstance().contactManager().setContactListener(contactListtener)
         initSliderBar()
         //加载联系人 P层触发
         contactPresnter.loadContracts()
     }
-
+    //sliderbar监听回调 字母显示 隐藏
     private fun initSliderBar() {
         slideBar.onSectionChangeListener = object : SlideBar.OnSectionChangeListener {
             override fun onSectionChange(firstletter: String) {
@@ -90,6 +89,7 @@ class ContactFragment:BaseFragment(), ContactContract.View{
     }
 
     private fun initRecycleView() {
+        //apply语句
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
@@ -110,7 +110,7 @@ class ContactFragment:BaseFragment(), ContactContract.View{
         headerTitle.text = getString(R.string.contact)
         add.visibility = View.VISIBLE
 
-        //添加好友
+        //添加好友右上角*****************
         add.setOnClickListener {
             context?.startActivity<AddFriendActivity>()
         }
